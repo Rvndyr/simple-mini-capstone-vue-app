@@ -1,9 +1,27 @@
 <template>
   <div class="home">
     <h2>Products</h2>
+    <div>
+      Name:
+      <input type="text" v-model="newProduct.name" />
+    </div>
+    <div>
+      Price:
+      <input type="text" v-model="newProduct.price" />
+    </div>
+    <div>
+      Description:
+      <input type="text" v-model="newProduct.description" />
+    </div>
+    <div>
+      Image Url:
+      <input type="text" v-model="newProduct.image_url" />
+    </div>
+    <button v-on:click="createProduct()">Create Product</button>
     <div v-for="product in products" v-bind:key="product.id">
-      <h4>Name: {{ product.name }}</h4>
+      <h3>Name: {{ product.name }}</h3>
       <h4>Price: {{ product.price }}</h4>
+      <h4>Description: {{ product.description }}</h4>
     </div>
   </div>
 </template>
@@ -15,16 +33,40 @@ export default {
   data: function () {
     return {
       products: [],
+      newProduct: {
+        name: "",
+        price: "",
+        description: "",
+        image_url: "",
+      },
     };
   },
   created: function () {
     this.indexProducts();
   },
+
   methods: {
     indexProducts: function () {
       axios.get("http://localhost:3000/products").then((response) => {
         this.products = response.data;
         console.log(this.products);
+      });
+    },
+    createProduct: function () {
+      var params = {
+        name: this.newProduct.name,
+        price: this.newProduct.price,
+        description: this.newProduct.description,
+        image_url: this.newProduct.image_url,
+      };
+      axios.post("http://localhost:3000/products", params).then((response) => {
+        this.products.push(response.data);
+        params = {
+          name: "",
+          price: "",
+          description: "",
+          image_url: "",
+        };
       });
     },
   },
