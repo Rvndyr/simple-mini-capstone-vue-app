@@ -43,6 +43,7 @@
           <input type="text" v-model="currentProduct.description" />
         </p>
         <button v-on:click="updateProduct(currentProduct)">Update</button>
+        <button v-on:click="destroyProduct(currentProduct)">Delete</button>
         <button>Close</button>
       </form>
     </dialog>
@@ -111,6 +112,14 @@ export default {
       };
       axios.patch(`http://localhost:3000/products/${currentProduct.id}`, params).then((response) => {
         console.log("This is update", response.data);
+      });
+    },
+    destroyProduct: function (currentProduct) {
+      console.log("Destroy Product", currentProduct);
+      axios.delete(`http://localhost:3000/products/${currentProduct.id}`).then((response) => {
+        let index = this.product.indexOf(currentProduct);
+
+        console.log("delete success", response.data);
       });
     },
   },
