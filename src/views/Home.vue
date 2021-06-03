@@ -118,6 +118,7 @@ export default {
       console.log("Destroy Product", currentProduct);
       axios.delete(`http://localhost:3000/products/${currentProduct.id}`).then((response) => {
         let index = this.product.indexOf(currentProduct);
+        currentProduct.splice(index);
 
         console.log("delete success", response.data);
       });
